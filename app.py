@@ -16,3 +16,14 @@ def index():
     usuarios = mysql.query_db("select * from usuarios")
     return render_template('index.html',
                            todos_los_usuarios=usuarios)
+#generar la ruta para el formulario de creación usuarios
+@app.route("/usuarios/nuevo")
+def nuevo():
+    return render_template('nuevo.html')
+#crear la ruta para procesar el formulario
+#@app.route("/usuarios/crear")
+#def crear():
+
+
+if __name__ == '__main__':
+    app.run(debug=True)                           

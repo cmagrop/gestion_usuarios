@@ -26,6 +26,7 @@ class MySQLConnection:
                     return cursor.lastrowid #retorna el ultimo id de la tabla
                 elif query.lower().find("select")>=0:
                     result = cursor.fetchall()#recuperar todas las filas de un select
+                    return result
                 else:
                     self.connection.commit()
             except Exception as e:
@@ -36,10 +37,3 @@ class MySQLConnection:
 
 def connectMySQL(db):
     return MySQLConnection(db) #returna un objeto MYSQLConnection
-
-
-                
-
-
-       
-    
