@@ -1,4 +1,4 @@
-Pasos antes de descargar
+Pasos antes de ejecutar
 
 Paso 1: Instalar entorno virtual
 python -m venv venv
