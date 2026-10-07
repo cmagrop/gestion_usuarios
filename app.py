@@ -21,8 +21,21 @@ def index():
 def nuevo():
     return render_template('nuevo.html')
 #crear la ruta para procesar el formulario
-#@app.route("/usuarios/crear")
-#def crear():
+@app.route("/usuarios/crear", methods=["POST"])
+def crear():
+    data ={
+        "nombre":request.form['nombre'],
+        "apellido": request.form['apellido'],
+        "email": request.form['email']
+    }
+    query= "insert into usuarios (nombre,apellido,email,created_at,updated_at) " \
+    "values(%(nombre)s,%(apellido)s,%(email)s,NOW(),NOW())"
+    #conexion a la BD
+    mysql = connectMySQL('esquema_usuarios')
+    #Guardar , se devolverá el id del usuario creado
+    nuevo_id = mysql.query_db(query,data)
+    #redirigir a la pagina principal
+    return redirect(f'/{nuevo_id}')
 
 
 if __name__ == '__main__':
