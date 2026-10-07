@@ -36,6 +36,38 @@ def crear():
     nuevo_id = mysql.query_db(query,data)
     #redirigir a la pagina principal
     return redirect(f'/{nuevo_id}')
+#Ruta para mostrar la informacion detallada de un usuario
+@app.route("/<int:id>")
+def mostrar_usuario(id):
+    query = "select * from usuarios where id=%(id)s"
+    data = {"id":id}
+    #conexion a la BD
+    mysql = connectMySQL('esquema_usuarios')
+    #resultado es una lista con todos los resultados, donde en este caso
+    #el resultado solo será el correspondiente al id consultado
+    resultado = mysql.query_db(query,data) #obtener resultados
+    if not resultado: #que si no existen resultados
+        return redirect("/")
+    return render_template('mostrar.html',usuario=resultado[0])  
+#usuario=['Marta']
+#ruta de formulario actualización
+@app.route("usuarios/<int:id>/actualizar")
+def actualizar(id):
+    data ={
+            "nombre":request.form['nombre'],
+            "apellido": request.form['apellido'],
+            "email": request.form['email']
+        }
+    query= "update usuarios set nombre=%(nombre)s,apellido=%(apellido)s,email=%(email)s" \
+    "updated_at=NOW() where id=%(id)s"
+        #conexion a la BD
+    mysql = connectMySQL('esquema_usuarios')
+        #Guardar , se devolverá el id del usuario creado
+    nuevo_id = mysql.query_db(query,data)
+        #redirigir a la pagina principal
+    return redirect(f'/{nuevo_id}')
+
+       
 
 
 if __name__ == '__main__':
