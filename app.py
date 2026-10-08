@@ -30,7 +30,7 @@ def crear():
     }
     query= "insert into usuarios (nombre,apellido,email,created_at,updated_at) " \
     "values(%(nombre)s,%(apellido)s,%(email)s,NOW(),NOW())"
-    #conexion a la BD
+    #conexion a la BD->creando un objeto de tipo MySQLConnection
     mysql = connectMySQL('esquema_usuarios')
     #Guardar , se devolverá el id del usuario creado
     nuevo_id = mysql.query_db(query,data)
@@ -50,8 +50,19 @@ def mostrar_usuario(id):
         return redirect("/")
     return render_template('mostrar.html',usuario=resultado[0])  
 #usuario=['Marta']
+#mostrar la vista del formulario para llenado de campos
+@app.route("/<int:id>/editar")
+def editar(id):
+    query = "select * from usuarios where id=%(id)s"
+    data = {"id":id}
+    mysql = connectMySQL("esquema_usuarios")
+    resultado = mysql.query_db(query,data)
+    if not resultado:
+        return redirect("/")
+    return render_template("editar.html",usuario=resultado[0])
+
 #ruta de formulario actualización
-@app.route("usuarios/<int:id>/actualizar")
+@app.route("/usuarios/<int:id>/actualizar", methods=['POST'])
 def actualizar(id):
     data ={
             "nombre":request.form['nombre'],
@@ -62,10 +73,9 @@ def actualizar(id):
     "updated_at=NOW() where id=%(id)s"
         #conexion a la BD
     mysql = connectMySQL('esquema_usuarios')
-        #Guardar , se devolverá el id del usuario creado
-    nuevo_id = mysql.query_db(query,data)
-        #redirigir a la pagina principal
-    return redirect(f'/{nuevo_id}')
+    mysql.query_db(query,data) #ejecuta la consulta
+    return redirect(f'/{id}')
+    
 
        
 

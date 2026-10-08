@@ -7,7 +7,7 @@ class MySQLConnection:
             password='1234', #password de la base datos
             database=db, #nombre de la bd
             charset='utf8mb4', #conjunto de caracteres BD
-            cursorclass=pymysql.cursors.DictCursor, #define un curso de tipo de diccionario
+            cursorclass=pymysql.cursors.DictCursor, #define un cursor de tipo de diccionario
             #cursor: es una clase que permite manipular las filas de una tabla
             autocommit=True #confirmar las operaciones automaticamente
 
