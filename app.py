@@ -65,20 +65,29 @@ def editar(id):
 @app.route("/usuarios/<int:id>/actualizar", methods=['POST'])
 def actualizar(id):
     data ={
+            "id":id,
             "nombre":request.form['nombre'],
             "apellido": request.form['apellido'],
             "email": request.form['email']
         }
-    query= "update usuarios set nombre=%(nombre)s,apellido=%(apellido)s,email=%(email)s" \
-    "updated_at=NOW() where id=%(id)s"
-        #conexion a la BD
+    query= "UPDATE usuarios SET nombre=%(nombre)s,apellido=%(apellido)s,email=%(email)s," \
+    "updated_at=NOW() WHERE id=%(id)s"
+    print(query)
+        #conexion a la BD   
     mysql = connectMySQL('esquema_usuarios')
-    mysql.query_db(query,data) #ejecuta la consulta
+    resultado=mysql.query_db(query,data) #ejecuta la consulta
+    print(resultado)
     return redirect(f'/{id}')
+
+#eliminar un usuario
+@app.route("/<int:id>/eliminar")
+def eliminar(id):
+    data={"id":id}
+    query="delete from usuarios where id=%(id)s"
+    mysql = connectMySQL("esquema_usuarios")
+    mysql.query_db(query,data)
+    return redirect("/")
     
-
-       
-
 
 if __name__ == '__main__':
     app.run(debug=True)                           
